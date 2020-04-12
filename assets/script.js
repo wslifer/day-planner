@@ -1,66 +1,51 @@
 window.onload = function () {
-  var today = new Date();
-  date = moment().format("LL");
-  // get a current day from page being loaded
-  $("#currentDay").html(date);
+  var date = moment().format("MMM Do YY");
+  // get a current day from page being loaded.
+  $("#currentDay").append(date);
 };
 
-var workHours = [
-  "9AM",
-  "10AM",
-  "11AM",
-  "12PM",
-  "1PM",
-  "2PM",
-  "3PM",
-  "4PM",
-  "5PM",
-];
-var container = $(".container");
+var workHours = ["9", "10", "11", "12", "13", "14", "15", "16", "17"];
+updateTime();
 
-$.each(workHours, function (index, value) {
-  var backgroundColor = getTime(value);
-  var newRow = $("<div>").addClass("row");
-  var newCol1 = $("<div>" + value + "</div>").addClass("col-sm-1 hour time");
-  var newCol2 = $("<div></div>").addClass(
-    "col-sm-10 past description " + backgroundColor + " time-" + value
-  );
-  var newCol3 = $("<button></button>").addClass("col-sm-1 saveBtn");
-  var textarea = $("<textarea></textarea>").addClass("col-sm-12 input");
-  var icon = $(
-    '<i class="far fa-save fa-3x" style="margin: auto; padding: 10px;"></i>'
-  );
+// getting current time and updating throughout real day.
+function updateTime() {
+  var currentTime = moment().format("H");
 
-  newRow.append(newCol1);
-  newRow.append(newCol2);
-  newCol2.append(textarea);
-  newRow.append(newCol3);
-  newCol3.append(icon);
-  container.append(newRow);
-});
-
-function getTime(current) {
-  var date = new Date();
-  var hours = date.getHours();
-  var minutes = date.getMinutes();
-
-  var newformat = hours >= 12 ? "PM" : "AM";
-
-  hours = hours % 12;
-
-  hours = hours ? hours : 12;
-  minutes = minutes < 10 ? "0" + minutes : minutes;
-
-  var currentTime = hours + newformat;
-
-  $.each(workHours, function (index, value) {
-    $(".time-" + value + " .input").val(localStorage.getItem(value));
-  });
+  for (var i = 0; i < workHours.length; i++) {
+    if (parseInt(workHours[i]) > currentTime) {
+      $("#" + workHours[i]).addClass(future);
+    } else if (parseInt(workHours[i]) < currentTime) {
+      $("#" + workHours[i]).addClass(past);
+    } else if (parseInt(workHours[i]) == currentTime) {
+      $("#" + workHours[i]).addClass(present);
+    }
+  }
 }
+
+//button to store to local storage
 $(".saveBtn").click(function () {
-  var time = $(this).siblings("div.time").text();
-  console.log(time);
-  var input = $(this).siblings("div.description").children("textarea").val();
-  console.log(input);
-  localStorage.setItem(time, input);
+  var timeOfDay = $(this).parent().attr("id");
+  var textContent = $("input").val().trim();
+
+  localStorage.setItem(timeOfDay, textContent);
+  console.log(timeOfDay, textContent);
 });
+
+// retrieving from local storage so that page doesn't reset on refresh
+$("#9am").children("input").val(localStorage.getItem("9am"));
+
+$("#10am").children("input").val(localStorage.getItem("10am"));
+
+$("#11am").children("input").val(localStorage.getItem("11am"));
+
+$("#12pm").children("input").val(localStorage.getItem("12pm"));
+
+$("#1pm").children("input").val(localStorage.getItem("1pm"));
+
+$("#2pm").children("input").val(localStorage.getItem("2pm"));
+
+$("#3pm").children("input").val(localStorage.getItem("3pm"));
+
+$("#4pm").children("input").val(localStorage.getItem("4pm"));
+
+$("#5pm").children("input").val(localStorage.getItem("5pm"));
