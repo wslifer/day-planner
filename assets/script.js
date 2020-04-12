@@ -50,7 +50,12 @@ function getTime(current) {
 
   hours = hours ? hours : 12;
   minutes = minutes < 10 ? "0" + minutes : minutes;
+
   var currentTime = hours + newformat;
+
+  $.each(workHours, function (index, value) {
+    $(".time-" + value + " .input").val(localStorage.getItem(value));
+  });
 }
 $(".saveBtn").click(function () {
   var time = $(this).siblings("div.time").text();
