@@ -13,11 +13,11 @@ function updateTime() {
 
   for (var i = 0; i < workHours.length; i++) {
     if (parseInt(workHours[i]) > currentTime) {
-      $("#" + workHours[i]).addClass(future);
+      $("#" + workHours[i]).addClass("future");
     } else if (parseInt(workHours[i]) < currentTime) {
-      $("#" + workHours[i]).addClass(past);
+      $("#" + workHours[i]).addClass("past");
     } else if (parseInt(workHours[i]) == currentTime) {
-      $("#" + workHours[i]).addClass(present);
+      $("#" + workHours[i]).addClass("present");
     }
   }
 }
